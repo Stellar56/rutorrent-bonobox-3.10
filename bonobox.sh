@@ -189,6 +189,7 @@ fi
 	libwww-perl \
 	mediainfo \
 	mktorrent \
+	net-tools \
 	nano \
 	nginx \
 	ntp \

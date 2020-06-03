@@ -1,5 +1,7 @@
 # Script d'installation ruTorrent / Nginx
 
+Script installation en Français par defaut
+
 ![logo](https://raw.github.com/exrat/rutorrent-bonobox/master/files/bonobox.png)
 
 * Multi-utilisateurs & Multilingue automatique en fonction de l'installation du serveur
@@ -25,9 +27,9 @@ apt-get update && apt-get upgrade -y
 apt-get install git lsb-release -y
 
 cd /tmp
-git clone https://github.com/exrat/rutorrent-bonobox
-cd rutorrent-bonobox
-chmod a+x bonobox.sh && ./bonobox.sh
+git clone https://github.com/stellar56/rutorrent-bonobox-3.10
+cd rutorrent-bonobox-3.10
+chmod a+x bonobox.sh && ./bonobox.sh --fr
 ```
 ![caps1](https://raw.github.com/exrat/rutorrent-bonobox/master/files/caps_script01.png)
 
@@ -66,4 +68,7 @@ Merci de vous conformer à la législation en vigueur en fonction de vos pays re
 
 ### License
 This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+-Feature
+*forced https
 

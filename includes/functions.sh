@@ -70,15 +70,15 @@ FONCIP () {
 	"$CMDAPTGET" install -y net-tools
 	IP=$("$CMDIP" -4 addr | "$CMDGREP" "inet" | "$CMDGREP" -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | "$CMDAWK" '{print $2}' | "$CMDCUT" -d/ -f1)
 
-	if [ "$IP" = "" ]; then
-		IP=$("$CMDWGET" -qO- ipv4.icanhazip.com)
-			if [ "$IP" = "" ]; then
-				IP=$("$CMDWGET" -qO- ipv4.bonobox.net)
-				if [ "$IP" = "" ]; then
-					IP=x.x.x.x
-				fi
-			fi
+if [ "$IP" = "" ]; then
+	IP=$("$CMDWGET" -qO- ipv4.icanhazip.com)
+if [ "$IP" = "" ]; then
+	IP=$("$CMDWGET" -qO- ipv4.bonobox.net)
+if [ "$IP" = "" ]; then
+	IP=x.x.x.x
 	fi
+fi
+fi
 }
 
 FONCPORT () {

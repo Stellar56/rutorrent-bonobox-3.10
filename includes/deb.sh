@@ -1,31 +1,31 @@
 #!/bin/bash
 
 FONCDEP () {
-	"$CMDCAT" <<- EOF > "$SOURCES"/non-free.list
+"$CMDCAT" <<- EOF > "$SOURCES"/non-free.list
 		# dépôt paquets propriétaires
 		deb http://ftp2.fr.debian.org/debian/ $1 main non-free
-	EOF
+EOF
 
-	"$CMDCAT" <<- EOF > "$SOURCES"/nginx.list
+"$CMDCAT" <<- EOF > "$SOURCES"/nginx.list
 		# dépôt nginx
 		deb http://nginx.org/packages/mainline/debian/ $1 nginx
 		deb-src http://nginx.org/packages/mainline/debian/ $1 nginx
-	EOF
+EOF
 
-	"$CMDCAT" <<- EOF > "$SOURCES"/multimedia.list
+"$CMDCAT" <<- EOF > "$SOURCES"/multimedia.list
 		# dépôt multimedia
 		deb http://www.deb-multimedia.org $1 main non-free
-	EOF
+EOF
 
-	"$CMDCAT" <<- EOF > "$SOURCES"/sury-php.list
+"$CMDCAT" <<- EOF > "$SOURCES"/sury-php.list
 		# dépôt sury php 7.3
 		deb https://packages.sury.org/php/ $1 main
-	EOF
+EOF
 
-	"$CMDCAT" <<- EOF > "$SOURCES"/mediainfo.list
+"$CMDCAT" <<- EOF > "$SOURCES"/mediainfo.list
 		# dépôt mediainfo
 		deb http://mediaarea.net/repo/deb/debian/ $1 main
-	EOF
+EOF
 
 	# clés
 	"$CMDWGET" https://packages.sury.org/php/apt.gpg -O sury.gpg && "$CMDAPTKEY" add sury.gpg 2>/dev/null

@@ -489,10 +489,10 @@ EOF
 	"$CMDSED" -i "s/UsePAM/#UsePAM/g;" /etc/ssh/sshd_config
 
 	# chroot user
-	"$CMDCAT" <<- EOF >> /etc/ssh/sshd_config
+"$CMDCAT" <<- EOF >> /etc/ssh/sshd_config
 		Match User $USER
 		ChrootDirectory /home/$USER
-	EOF
+EOF
 
 	# configuration .rtorrent.rc
 	FONCTORRENTRC "$USER" "$PORT" "$RUTORRENT"
@@ -522,10 +522,10 @@ EOF
 	# mise en place crontab
 	"$CMDCRONTAB" -l > rtorrentdem
 
-	"$CMDCAT" <<- EOF >> rtorrentdem
+"$CMDCAT" <<- EOF >> rtorrentdem
 		#$UPGEOIP 2 9 * * $CMDBASH $SCRIPT/updateGeoIP.sh > /dev/null 2>&1
 		0 5 * * * $CMDBASH $SCRIPT/backup-session.sh > /dev/null 2>&1
-	EOF
+EOF
 
 	"$CMDCRONTAB" rtorrentdem
 	"$CMDRM" rtorrentdem
@@ -543,7 +543,6 @@ EOF
 	"$CMDSED" -i "/ssh/,+6d" /etc/fail2ban/jail.local
 
 "$CMDCAT" <<- EOF >> /etc/fail2ban/jail.local
-
 		[ssh]
 		enabled  = true
 		port     = ssh
@@ -567,7 +566,7 @@ EOF
 		logpath = /var/log/nginx/*access.log
 		banaction = iptables-multiport
 		maxretry = 5
-	EOF
+EOF
 
 	FONCSERVICE restart fail2ban
 
@@ -588,7 +587,6 @@ if FONCYES "$SERVFTP"; then
 		"$CMDSED" -i "/vsftpd/,+10d" /etc/fail2ban/jail.local
 
 "$CMDCAT" <<- EOF >> /etc/fail2ban/jail.local
-
 			[vsftpd]
 			enabled  = true
 			port     = ftp,ftp-data,ftps,ftps-data
@@ -708,39 +706,39 @@ fi
 	PASSNGINX=${USERPWD}
 
 		# ajout utilisateur
-		"$CMDUSERADD" -M -s /bin/bash "$USER"
+	"$CMDUSERADD" -M -s /bin/bash "$USER"
 
 		# création mot de passe utilisateur
-		"$CMDECHO" "${USER}:${USERPWD}" | "$CMDCHPASSWD"
+	"$CMDECHO" "${USER}:${USERPWD}" | "$CMDCHPASSWD"
 
 		# anti-bug /home/user déjà existant
-		"$CMDMKDIR" -p /home/"$USER"
-		"$CMDCHOWN" -R "$USER":"$USER" /home/"$USER"
+	"$CMDMKDIR" -p /home/"$USER"
+	"$CMDCHOWN" -R "$USER":"$USER" /home/"$USER"
 
 		# variable utilisateur majuscule
-		USERMAJ=$("$CMDECHO" "$USER" | "$CMDTR" "[:lower:]" "[:upper:]")
+	USERMAJ=$("$CMDECHO" "$USER" | "$CMDTR" "[:lower:]" "[:upper:]")
 
 		# création de dossier
-		"$CMDSU" "$USER" -c ""$CMDMKDIR" -p ~/watch ~/torrents ~/.session ~/.backup-session"
+	"$CMDSU" "$USER" -c ""$CMDMKDIR" -p ~/watch ~/torrents ~/.session ~/.backup-session"
 
 		# calcul port
-		FONCPORT
+	FONCPORT
 
 		# configuration .rtorrent.rc
-		FONCTORRENTRC "$USER" "$PORT" "$RUTORRENT"
+	FONCTORRENTRC "$USER" "$PORT" "$RUTORRENT"
 
 		# configuration user rutorrent.conf
 		"$CMDSED" -i '$d' "$NGINXENABLE"/rutorrent.conf
-		FONCRTCONF "$USERMAJ"  "$PORT" "$USER"
+	FONCRTCONF "$USERMAJ"  "$PORT" "$USER"
 
 		# configuration script bakup .session
-		FONCBAKSESSION
+	FONCBAKSESSION
 
 		# config.php
 		"$CMDMKDIR" "$RUCONFUSER"/"$USER"
-		FONCPHPCONF "$USER" "$PORT" "$USERMAJ"
+	FONCPHPCONF "$USER" "$PORT" "$USERMAJ"
 
-		# chroot user supplèmentaire
+	# chroot user supplèmentaire
 "$CMDCAT" <<- EOF >> /etc/ssh/sshd_config
 		Match User $USER
 		ChrootDirectory /home/$USER
@@ -752,7 +750,7 @@ EOF
 		"$CMDCP" -f "$FILES"/rutorrent/plugins.ini "$RUCONFUSER"/"$USER"/plugins.ini
 
 		# configuration autodl-irssi
-		FONCIRSSI "$USER" "$PORT" "$USERPWD"
+	FONCIRSSI "$USER" "$PORT" "$USERPWD"
 
 		# permissions
 		"$CMDCHOWN" -R "$WDATA" "$RUTORRENT"

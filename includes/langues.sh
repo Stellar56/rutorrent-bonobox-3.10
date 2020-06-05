@@ -16,7 +16,7 @@ case "$1" in
 	BASELANG="${LANG:0:2}"
 		
 		# detection auto
-if   [ "$BASELANG" = "fr" ]; then GENLANG="fr"
+if [ "$BASELANG" = "fr" ]; then GENLANG="fr"
 	elif [ "$BASELANG" = "en" ]; then GENLANG="en"
 	elif [ "$BASELANG" = "de" ]; then GENLANG="de"
 	elif [ "$BASELANG" = "ru" ]; then GENLANG="ru"
@@ -25,10 +25,10 @@ if   [ "$BASELANG" = "fr" ]; then GENLANG="fr"
 	elif [ "$BASELANG" = "pt_BR" ]; then GENLANG="ptbr"
 	else
 		GENLANG="fr"
-			fi
-			break
-		;;
-	esac
+fi
+		break
+	;;
+esac
 done
 
 # fix langue shell root

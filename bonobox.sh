@@ -20,7 +20,7 @@
 #
 # cd /tmp
 # git clone https://github.com/stellar56/rutorrent-bonobox-3.10
-# cd rutorrent-bonobox
+# cd rutorrent-bonobox-3.10
 # chmod a+x bonobox.sh && ./bonobox.sh --fr
 #
 # Pour gérer vos utilisateurs ultérieurement, il vous suffit de relancer le script

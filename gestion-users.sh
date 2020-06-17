@@ -57,17 +57,17 @@ case $OPTION in
 	PASSNGINX=${USERPWD}
 
 		# ajout utilisateur
-		"$CMDUSERADD" -M -s /bin/bash "$USER"
+	"$CMDUSERADD" -M -s /bin/bash "$USER"
 
 		# création mot de passe utilisateur
-		"$CMDECHO" "${USER}:${USERPWD}" | "$CMDCHPASSWD"
+	"$CMDECHO" "${USER}:${USERPWD}" | "$CMDCHPASSWD"
 
 		# anti-bug /home/user déjà existant
-		"$CMDMKDIR" -p /home/"$USER"
-		"$CMDCHOWN" -R "$USER":"$USER" /home/"$USER"
+	"$CMDMKDIR" -p /home/"$USER"
+	"$CMDCHOWN" -R "$USER":"$USER" /home/"$USER"
 
 		# variable utilisateur majuscule
-		USERMAJ=$("$CMDECHO" "$USER" | "$CMDTR" "[:lower:]" "[:upper:]")
+	USERMAJ=$("$CMDECHO" "$USER" | "$CMDTR" "[:lower:]" "[:upper:]")
 
 		# récupération ip serveur
 	FONCIP
@@ -93,7 +93,7 @@ fi
 	FONCPHPCONF "$USER" "$PORT" "$USERMAJ"
 
 		# plugins.ini
-		"$CMDCP" -f "$FILES"/rutorrent/plugins.ini "$RUCONFUSER"/"$USER"/plugins.ini
+	"$CMDCP" -f "$FILES"/rutorrent/plugins.ini "$RUCONFUSER"/"$USER"/plugins.ini
 
 		# configuration autodl-irssi
 if [ -f "/etc/irssi.conf" ]; then
@@ -148,7 +148,7 @@ fi
 	PASSNGINX=${USERPWD}
 
 		# modification du mot de passe
-		"$CMDECHO" "${USER}:${USERPWD}" | "$CMDCHPASSWD"
+	"$CMDECHO" "${USER}:${USERPWD}" | "$CMDCHPASSWD"
 
 		# htpasswd
 	FONCHTPASSWD "$USER"
@@ -173,7 +173,7 @@ else
 	set "286"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"; "$CMDECHO" ""
 
 		# variable utilisateur majuscule
-		USERMAJ=$("$CMDECHO" "$USER" | "$CMDTR" "[:lower:]" "[:upper:]")
+	USERMAJ=$("$CMDECHO" "$USER" | "$CMDTR" "[:lower:]" "[:upper:]")
 
 		# stop utilisateur
 	FONCSERVICE stop "$USER"-rtorrent
@@ -182,7 +182,7 @@ if [ -f "/etc/irssi.conf" ]; then
 fi
 
 		# arrêt user
-		"$CMDPKILL" -u "$USER"
+	"$CMDPKILL" -u "$USER"
 
 		# suppression script
 if [ -f "/etc/irssi.conf" ]; then
@@ -193,31 +193,31 @@ fi
 		"$CMDUPDATERC" "$USER"-rtorrent remove
 
 		# suppression configuration rutorrent
-		"$CMDRM" -R "${RUCONFUSER:?}"/"$USER"
-		"$CMDRM" -R "${RUTORRENT:?}"/share/users/"$USER"
+	"$CMDRM" -R "${RUCONFUSER:?}"/"$USER"
+	"$CMDRM" -R "${RUTORRENT:?}"/share/users/"$USER"
 
 		# suppression mot de passe
-		"$CMDSED" -i "/^$USER/d" "$NGINXPASS"/rutorrent_passwd
-		"$CMDRM" "$NGINXPASS"/rutorrent_passwd_"$USER"
+	"$CMDSED" -i "/^$USER/d" "$NGINXPASS"/rutorrent_passwd
+	"$CMDRM" "$NGINXPASS"/rutorrent_passwd_"$USER"
 
 		# suppression nginx
 		"$CMDSED" -i '/location \/'"$USERMAJ"'/,/}/d' "$NGINXENABLE"/rutorrent.conf
 	FONCSERVICE restart nginx
 
 		# suppression backup .session
-		"$CMDSED" -i "/FONCBACKUP $USER/d" "$SCRIPT"/backup-session.sh
+	"$CMDSED" -i "/FONCBACKUP $USER/d" "$SCRIPT"/backup-session.sh
 
 		# suppression utilisateur
 		"$CMDDELUSER" "$USER" --remove-home
 	cd "$BONOBOX"
 		"$CMDECHO" ""; set "264" "288"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}$USER${CEND} ${CBLUE}$TXT2${CEND}"
 fi
-		;;
+	;;
 
 4) # debug
 		"$CMDCHMOD" a+x "$FILES"/scripts/check-rtorrent.sh
 		"$CMDBASH" "$FILES"/scripts/check-rtorrent.sh
-		;;
+	;;
 
 5) # sortir gestion utilisateurs
 		"$CMDECHO" ""; set "290"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"

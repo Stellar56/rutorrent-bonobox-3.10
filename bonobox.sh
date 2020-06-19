@@ -109,7 +109,7 @@ fi
 
 	FONCFSUSER "$USER"
 
-	# variable passe nginx
+		# variable passe nginx
 	PASSNGINX=${USERPWD}
 
 		# ajout utilisateur
@@ -452,7 +452,7 @@ fi
 	"$CMDTOUCH" "$NGINXPASS"/rutorrent_passwd
 	"$CMDCHMOD" 640 "$NGINXPASS"/rutorrent_passwd
 
-	# configuration serveur web
+		# configuration serveur web
 	"$CMDMKDIR" "$NGINXENABLE"
 	"$CMDCP" -f "$FILES"/nginx/nginx.conf "$NGINX"/nginx.conf
 for CONF in 'log_rutorrent.conf' 'ciphers.conf' 'cache.conf' 'php.conf'; do
@@ -467,7 +467,7 @@ done
 
 	"$CMDECHO" ""; set "152" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
 
-	# configuration ssl
+		# configuration ssl
 "$CMDOPENSSL" req -new -x509 -sha512 -days 3658 -nodes -newkey rsa:4096 -out "$NGINXSSL"/server.crt -keyout "$NGINXSSL"/server.key <<- EOF
 		KP
 		North Korea
@@ -530,12 +530,12 @@ EOF
 	"$CMDCRONTAB" rtorrentdem
 	"$CMDRM" rtorrentdem
 
-	# htpasswd
+		# htpasswd
 	FONCHTPASSWD "$USER"
 
 	"$CMDECHO" ""; set "168" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
 
-	# configuration fail2ban
+		# configuration fail2ban
 	"$CMDCP" -f "$FILES"/fail2ban/nginx-auth.conf /etc/fail2ban/filter.d/nginx-auth.conf
 	"$CMDCP" -f "$FILES"/fail2ban/nginx-badbots.conf /etc/fail2ban/filter.d/nginx-badbots.conf
 
@@ -576,8 +576,8 @@ if FONCYES "$SERVFTP"; then
 	"$CMDCP" -f "$FILES"/vsftpd/vsftpd.conf /etc/vsftpd.conf
 
 		# récupèration certificats nginx
-	"$CMDCP" -f "$NGINXSSL"/server.crt /etc/ssl/private/vsftpd.cert.pem
-	"$CMDCP" -f "$NGINXSSL"/server.key /etc/ssl/private/vsftpd.key.pem
+	"$CMDCP" -f "$NGINXSSL"/server.crt /etc/ssl/private/vsftpd.crt
+	"$CMDCP" -f "$NGINXSSL"/server.key /etc/ssl/private/vsftpd.key
 
 		"$CMDTOUCH" /etc/vsftpd.chroot_list
 		"$CMDTOUCH" /var/log/vsftpd.log

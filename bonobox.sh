@@ -237,8 +237,8 @@ fi
 
 	"$CMDECHO" ""; set "136" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
 
-		# génération clé 3072 bits
-	"$CMDOPENSSL" dhparam -out dhparams.pem 3072 >/dev/null 2>&1 &
+		# génération clé 4096 bits
+	"$CMDOPENSSL" dhparam -out dhparams.pem 4096 >/dev/null 2>&1 &
 
 		# téléchargement complément favicons
 	"$CMDWGET" -T 10 -t 3 http://www.bonobox.net/script/favicon.tar.gz || "$CMDWGET" -T 10 -t 3 http://alt.bonobox.net/favicon.tar.gz
@@ -491,13 +491,12 @@ EOF
 		# chroot user
 "$CMDCAT" <<- EOF >> /etc/ssh/sshd_config
 		Match User $USER
-		ChrootDirectory /home/$USER
 EOF
 
-	# configuration .rtorrent.rc
+		# configuration .rtorrent.rc
 	FONCTORRENTRC "$USER" "$PORT" "$RUTORRENT"
 
-	# permissions
+		# permissions
 	"$CMDCHOWN" -R "$USER":"$USER" /home/"$USER"
 	"$CMDCHOWN" root:"$USER" /home/"$USER"
 	"$CMDCHMOD" 755 /home/"$USER"
@@ -505,21 +504,21 @@ EOF
 	FONCSERVICE restart ssh
 	"$CMDECHO" ""; set "166" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
 
-	# configuration user rutorrent.conf
+		# configuration user rutorrent.conf
 	FONCRTCONF "$USERMAJ" "$PORT" "$USER"
 
-	# config.php
+		# config.php
 	FONCPHPCONF "$USER" "$PORT" "$USERMAJ"
 
-	# plugins.ini
+		# plugins.ini
 	"$CMDCP" -f "$FILES"/rutorrent/plugins.ini "$RUCONFUSER"/"$USER"/plugins.ini
 
-	# script rtorrent
+		# script rtorrent
 	FONCSCRIPTRT "$USER"
 	FONCSERVICE start "$USER"-rtorrent
 	FONCSERVICE start "$USER"-irssi
 
-	# mise en place crontab
+		# mise en place crontab
 	"$CMDCRONTAB" -l > rtorrentdem
 
 "$CMDCAT" <<- EOF >> rtorrentdem
@@ -570,7 +569,7 @@ EOF
 
 	FONCSERVICE restart fail2ban
 
-	# installation vsftpd
+		# installation vsftpd
 if FONCYES "$SERVFTP"; then
 	"$CMDAPTGET" install -y vsftpd
 	"$CMDCP" -f "$FILES"/vsftpd/vsftpd.conf /etc/vsftpd.conf
@@ -587,35 +586,35 @@ if FONCYES "$SERVFTP"; then
 	"$CMDSED" -i "/vsftpd/,+10d" /etc/fail2ban/jail.local
 
 "$CMDCAT" <<- EOF >> /etc/fail2ban/jail.local
-			[vsftpd]
-			enabled  = true
-			port     = ftp,ftp-data,ftps,ftps-data
-			filter   = vsftpd
-			logpath  = /var/log/vsftpd.log
-			banaction = iptables-multiport
-			# or overwrite it in jails.local to be
-			# logpath = /var/log/auth.log
-			# if you want to rely on PAM failed login attempts
-			# vsftpd's failregex should match both of those formats
-			maxretry = 5
+	[vsftpd]
+	enabled  = true
+	port     = ftp,ftp-data,ftps,ftps-data
+	filter   = vsftpd
+	logpath  = /var/log/vsftpd.log
+	banaction = iptables-multiport
+# or overwrite it in jails.local to be
+	# logpath = /var/log/auth.log
+	# if you want to rely on PAM failed login attempts
+	# vsftpd's failregex should match both of those formats
+	maxretry = 5
 EOF
 
 	FONCSERVICE restart fail2ban
 	"$CMDECHO" ""; set "172" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
 fi
 
-		# déplacement clé 3072 bits
+		# déplacement clé 4096 bits
 	"$CMDCP" -f /tmp/dhparams.pem "$NGINXSSL"/dhparams.pem
 	"$CMDCHMOD" 600 "$NGINXSSL"/dhparams.pem
 	FONCSERVICE restart nginx
 	
-		# contrôle clé 3072 bits
+		# contrôle clé 4096 bits
 if [ ! -f "$NGINXSSL"/dhparams.pem ]; then
 		"$CMDKILL" -HUP "$("$CMDPGREP" -x openssl)"
 		"$CMDECHO" ""; set "174"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 		set "176"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
 		cd "$NGINXSSL" || exit
-		"$CMDOPENSSL" dhparam -out dhparams.pem 3072
+		"$CMDOPENSSL" dhparam -out dhparams.pem 4096
 		"$CMDCHMOD" 600 dhparams.pem
 	FONCSERVICE restart nginx
 		
@@ -649,22 +648,22 @@ fi
 fi
 
 if FONCNO "$REPONSE"; then
-			# fin d'installation
-		"$CMDECHO" ""; set "192"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
+		# fin d'installation
+	"$CMDECHO" ""; set "192"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 	CLEANPASS="$("$CMDGREP" 182 "$BONOBOX"/lang/"$GENLANG".lang | "$CMDCUT" -c5- | "$CMDSED" "s/.$//")"
-		"$CMDSED" -i "/$CLEANPASS/,+4d" /tmp/install.log
-		"$CMDCP" -f /tmp/install.log "$RUTORRENT"/install.log
-		"$CMDPV" -f "$RUTORRENT"/install.log | "$CMDCCZE" -h > "$RUTORRENT"/install.html
-		"$CMDTRUE" > /var/log/nginx/rutorrent-error.log
+	"$CMDSED" -i "/$CLEANPASS/,+4d" /tmp/install.log
+	"$CMDCP" -f /tmp/install.log "$RUTORRENT"/install.log
+	"$CMDPV" -f "$RUTORRENT"/install.log | "$CMDCCZE" -h > "$RUTORRENT"/install.html
+	"$CMDTRUE" > /var/log/nginx/rutorrent-error.log
 if [ -z "$ARGREBOOT" ]; then
-		"$CMDECHO" ""; set "194"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
+	"$CMDECHO" ""; set "194"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
 	read -r REBOOT
 else
 if [ "$ARGREBOOT" = "reboot-off" ]; then
 		break
 else
-		"$CMDSYSTEMCTL" reboot
-			break
+	"$CMDSYSTEMCTL" reboot
+		break
 	fi
 fi
 
@@ -740,10 +739,9 @@ fi
 		"$CMDMKDIR" "$RUCONFUSER"/"$USER"
 	FONCPHPCONF "$USER" "$PORT" "$USERMAJ"
 
-	# chroot user supplèmentaire
-	"$CMDCAT" <<- EOF >> /etc/ssh/sshd_config
+		# chroot user supplèmentaire
+"$CMDCAT" <<- EOF >> /etc/ssh/sshd_config
 		Match User $USER
-		ChrootDirectory /home/$USER
 EOF
 
 	FONCSERVICE restart ssh
@@ -770,10 +768,10 @@ EOF
 	FONCSERVICE restart nginx
 
 		# log users
-		"$CMDECHO" "userlog">> "$RUTORRENT"/"$HISTOLOG".log
-		"$CMDSED" -i "s/userlog/$USER:$PORT/g;" "$RUTORRENT"/"$HISTOLOG".log
+	"$CMDECHO" "userlog">> "$RUTORRENT"/"$HISTOLOG".log
+	"$CMDSED" -i "s/userlog/$USER:$PORT/g;" "$RUTORRENT"/"$HISTOLOG".log
 if [ ! -f "$ARGFILE" ]; then
-		"$CMDECHO" ""; set "218"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"; "$CMDECHO" ""
+	"$CMDECHO" ""; set "218"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"; "$CMDECHO" ""
 	set "182"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND}"
 	set "184"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}$USER${CEND}"
 	set "186"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}${PASSNGINX}${CEND}"

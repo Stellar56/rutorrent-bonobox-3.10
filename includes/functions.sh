@@ -132,7 +132,7 @@ FONCRTCONF () {
 		scgi_pass 127.0.0.1:$2;
 		auth_basic "Restricted";
 		auth_basic_user_file "$NGINXPASS/rutorrent_passwd_$3";
-		}
+}
 }
 EOF
 

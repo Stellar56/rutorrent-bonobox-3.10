@@ -20,7 +20,7 @@ elif [[ "$VERSION" = 10.* ]]; then
 	DEBNAME="buster"
 fi
 
-HISTOLOG="histo-2019"
+HISTOLOG="histo-2020"
 PHPNAME="php7.3"
 PHPPATH="/etc/php/7.3"
 PHPSOCK="/run/php/php7.3-fpm.sock"
@@ -30,9 +30,9 @@ PHPSOCK="/run/php/php7.3-fpm.sock"
 LIBTORRENT="v0.13.8"
 RTORRENT="v0.9.8"
 
-#LIBZEN0="0.4.38"
-#LIBMEDIAINFO0="20.03"
-#MEDIAINFO="20.03
+LIBZEN0="0.4.38"
+LIBMEDIAINFO0="20.08"
+MEDIAINFO="20.08
 
 RUTORRENT="/var/www/rutorrent"
 RUPLUGINS="/var/www/rutorrent/plugins"

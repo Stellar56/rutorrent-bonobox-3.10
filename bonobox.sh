@@ -89,13 +89,13 @@ fi
 		# installation vsftpd
 if [ -z "$ARGFTP" ]; then
 	"$CMDECHO" ""; set "128"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
-	read -r SERVFTP
+		read -r SERVFTP
 else
 if [ "$ARGFTP" = "ftp-off" ]; then
 		SERVFTP="n"
 else
 		SERVFTP="y"
-	fi
+fi
 fi
 
 		# récupération 5% root sur /home ou /home/user si présent
@@ -578,9 +578,10 @@ if FONCYES "$SERVFTP"; then
 	"$CMDCP" -f "$NGINXSSL"/server.crt /etc/ssl/private/vsftpd.crt
 	"$CMDCP" -f "$NGINXSSL"/server.key /etc/ssl/private/vsftpd.key
 
-		"$CMDTOUCH" /etc/vsftpd.chroot_list
-		"$CMDTOUCH" /var/log/vsftpd.log
-		"$CMDCHMOD" 600 /var/log/vsftpd.log
+	"$CMDTOUCH" /etc/vsftpd.chroot_list
+	"$CMDTOUCH" /var/log/vsftpd.log
+	"$CMDCHMOD" 600 /var/log/vsftpd.log
+	
 	FONCSERVICE restart vsftpd
 
 	"$CMDSED" -i "/vsftpd/,+10d" /etc/fail2ban/jail.local

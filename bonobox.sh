@@ -196,6 +196,8 @@ fi
 	nmap \
 	ntpdate \
 	openssl \
+	bind9 \
+	bind9utils \
 	pastebinit \
 		"$PHPNAME" \
 		"$PHPNAME"-cli \

@@ -40,16 +40,16 @@ fi
 
 # fonction backup : exige un paramètre -> nom du user
 FONCBACKUP () {
-    if [ ! "$1" ]; then
+if [ ! "$1" ]; then
         exit 1
-    fi
+fi
 
     REPERTOIREUSER=/home/"$1"/.backup-session
 
-    if [ ! -d "$REPERTOIREUSER" ]; then
+if [ ! -d "$REPERTOIREUSER" ]; then
         "$CMDMKDIR" /home/"$1"/.backup-session
         "$CMDCHOWN" -R "$1":"$1" /home/"$1"/.backup-session
-    fi
+fi
 
     "$CMDMKDIR" /home/"$1"/.backup-session/Sauvegarde-du-"$DATE"
     "$CMDCP" /home/"$1"/.session/*.torrent /home/"$1"/.session/*.rtorrent /home/"$1"/.session/*.libtorrent_resume /home/"$1"/.backup-session/Sauvegarde-du-*
@@ -59,9 +59,9 @@ FONCBACKUP () {
     "$CMDCHOWN" -R "$1":"$1" /home/"$1"/.backup-session
     COMPTAGE=$("$CMDLS" | "$CMDGREP" sauvegarde | "$CMDWC" -l)
 
-    if [ "$COMPTAGE" -gt "$NBSAVE" ]; then
+if [ "$COMPTAGE" -gt "$NBSAVE" ]; then
         "$CMDRM" -Rf "$("$CMDLS" -at /home/"$1"/.backup-session/ | "$CMDGREP" sauvegarde | "$CMDTAIL" -1)"
-    fi
+fi
 }
 # liste users
 exit 0

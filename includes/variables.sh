@@ -30,9 +30,9 @@ PHPSOCK="/run/php/php7.3-fpm.sock"
 LIBTORRENT="v0.13.8"
 RTORRENT="v0.9.8"
 
-LIBZEN0="0.4.38"
-LIBMEDIAINFO0="20.08"
-MEDIAINFO="20.08
+#LIBZEN0="0.4.37"
+#LIBMEDIAINFO0="19.04"
+#MEDIAINFO="19.04"
 
 RUTORRENT="/var/www/rutorrent"
 RUPLUGINS="/var/www/rutorrent/plugins"

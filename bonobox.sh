@@ -187,6 +187,7 @@ fi
 		libwww-perl \
 		mediainfo \
 		mktorrent \
+		net-tools \
 		nano \
 		nginx \
 		ntp \
@@ -206,6 +207,7 @@ fi
 		"$PHPNAME"-readline \
 		"$PHPNAME"-xml \
 		"$PHPNAME"-zip \
+		"$PHPNAME"-mysql \
 		php-geoip \
 		pkg-config \
 		psmisc \
@@ -223,13 +225,15 @@ fi
 		zip \
 		zlib1g-dev
 
-if [[ "$VERSION" = 9.* ]]; then
-	"$CMDAPTGET" install -y \
-		libtinyxml2-4
 
-elif [[ "$VERSION" = 10.* ]]; then
+
+if [[ "$VERSION" = 10.* ]]; then
 	"$CMDAPTGET" install -y \
 		libtinyxml2-6a
+		
+elif [[ "$VERSION" = 9.* ]]; then
+	"$CMDAPTGET" install -y \
+		libtinyxml2-4
 fi
 
 	"$CMDECHO" ""; set "136" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""

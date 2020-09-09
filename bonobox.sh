@@ -87,7 +87,7 @@ fi
 
 		# installation vsftpd
 if [ -z "$ARGFTP" ]; then
-		"$CMDECHO" ""; set "128"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
+	"$CMDECHO" ""; set "128"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
 		read -r SERVFTP
 	else
 if [ "$ARGFTP" = "ftp-off" ]; then
@@ -577,8 +577,8 @@ if FONCYES "$SERVFTP"; then
 	"$CMDCP" -f "$FILES"/vsftpd/vsftpd.conf /etc/vsftpd.conf
 
 			# récupèration certificats nginx
-	"$CMDCP" -f "$NGINXSSL"/server.crt /etc/ssl/private/vsftpd.cert.pem
-	"$CMDCP" -f "$NGINXSSL"/server.key /etc/ssl/private/vsftpd.key.pem
+	"$CMDCP" -f "$NGINXSSL"/server.crt /etc/ssl/private/vsftpd.cert
+	"$CMDCP" -f "$NGINXSSL"/server.key /etc/ssl/private/vsftpd.key
 
 	"$CMDTOUCH" /etc/vsftpd.chroot_list
 	"$CMDTOUCH" /var/log/vsftpd.log
@@ -598,7 +598,7 @@ if FONCYES "$SERVFTP"; then
 			# logpath = /var/log/auth.log
 			# if you want to rely on PAM failed login attempts
 			# vsftpd's failregex should match both of those formats
-			maxretry = 5
+		maxretry = 3
 EOF
 
 	FONCSERVICE restart fail2ban

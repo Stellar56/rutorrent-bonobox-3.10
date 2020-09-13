@@ -41,24 +41,24 @@ INCLUDES="includes"
 . "$INCLUDES"/cmd.sh
 # shellcheck source=/dev/null
 . "$INCLUDES"/variables.sh
-# shellcheck source=/dev/null
+		# shellcheck source=/dev/null
 . "$INCLUDES"/langues.sh
-# shellcheck source=/dev/null
+		# shellcheck source=/dev/null
 . "$INCLUDES"/functions.sh
 
-# contrôle droits utilisateur & OS
+		# contrôle droits utilisateur & OS
 FONCCONTROL
 FONCBASHRC
 
-# contrôle installation
+		# contrôle installation
 if [ ! -f "$NGINXENABLE"/rutorrent.conf ]; then
 	# contröle wget
 if [ ! -f "$CMDWGET" ]; then
 	"$CMDAPTGET" install -y wget &>/dev/null
 fi
-	# log de l'installation
+		# log de l'installation
 	exec > >("$CMDTEE" "/tmp/install.log") 2>&1
-	# liste users en arguments
+		# liste users en arguments
 	TESTARG=$("$CMDECHO" "$ARG" | "$CMDTR" -s ' ' '\n' | "$CMDGREP" :)
 if [ ! -z "$TESTARG" ]; then
 	"$CMDECHO" "$ARG" | "$CMDTR" -s ' ' '\n' | "$CMDGREP" : > "$ARGFILE"
@@ -89,10 +89,10 @@ fi
 if [ -z "$ARGFTP" ]; then
 	"$CMDECHO" ""; set "128"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
 		read -r SERVFTP
-	else
+else
 if [ "$ARGFTP" = "ftp-off" ]; then
 		SERVFTP="n"
-	else
+else
 		SERVFTP="y"
 fi
 fi
@@ -130,7 +130,7 @@ fi
 		# récupération threads & sécu -j illimité
 	THREAD=$("$CMDGREP" -c processor < /proc/cpuinfo)
 if [ "$THREAD" = "" ]; then
-		THREAD=1
+	THREAD=1
 fi
 
 		# ajout dépôts
@@ -139,8 +139,8 @@ fi
 
 		# bind9 & dhcp
 if [ ! -d /etc/bind ]; then
-		"$CMDRM" /etc/init.d/bind9 &> /dev/null
-		"$CMDAPTGET" install -y bind9
+	"$CMDRM" /etc/init.d/bind9 &> /dev/null
+	"$CMDAPTGET" install -y bind9
 fi
 
 if [ -f /etc/dhcp/dhclient.conf ]; then
@@ -224,8 +224,6 @@ fi
 		whois \
 		zip \
 		zlib1g-dev
-
-
 
 if [[ "$VERSION" = 10.* ]]; then
 	"$CMDAPTGET" install -y \
@@ -540,10 +538,9 @@ EOF
 	"$CMDCP" -f "$FILES"/fail2ban/nginx-badbots.conf /etc/fail2ban/filter.d/nginx-badbots.conf
 
 	"$CMDCP" -f /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-	"$CMDSED"  -i "/ssh/,+6d" /etc/fail2ban/jail.local
+	"$CMDSED" -i "/ssh/,+6d" /etc/fail2ban/jail.local
 
 "$CMDCAT" <<- EOF >> /etc/fail2ban/jail.local
-
 		[ssh]
 		enabled  = true
 		port     = ssh
@@ -576,7 +573,7 @@ if FONCYES "$SERVFTP"; then
 	"$CMDAPTGET" install -y vsftpd
 	"$CMDCP" -f "$FILES"/vsftpd/vsftpd.conf /etc/vsftpd.conf
 
-			# récupèration certificats nginx
+		# récupèration certificats nginx
 	"$CMDCP" -f "$NGINXSSL"/server.crt /etc/ssl/private/vsftpd.cert
 	"$CMDCP" -f "$NGINXSSL"/server.key /etc/ssl/private/vsftpd.key
 
@@ -611,14 +608,14 @@ fi
 	FONCSERVICE restart nginx
 	# contrôle clé 4096 bits
 if [ ! -f "$NGINXSSL"/dhparams.pem ]; then
-		"$CMDKILL" -HUP "$("$CMDPGREP" -x openssl)"
-		"$CMDECHO" ""; set "174"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
-		set "176"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
-		cd "$NGINXSSL" || exit
-		"$CMDOPENSSL" dhparam -out dhparams.pem 4096
-		"$CMDCHMOD" 600 dhparams.pem
-		FONCSERVICE restart nginx
-		"$CMDECHO" ""; set "178" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
+	"$CMDKILL" -HUP "$("$CMDPGREP" -x openssl)"
+	"$CMDECHO" ""; set "174"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
+	set "176"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
+	cd "$NGINXSSL" || exit
+	"$CMDOPENSSL" dhparam -out dhparams.pem 4096
+	"$CMDCHMOD" 600 dhparams.pem
+	FONCSERVICE restart nginx
+	"$CMDECHO" ""; set "178" "134"; FONCTXT "$1" "$2"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}${CGREEN}$TXT2${CEND}"; "$CMDECHO" ""
 fi
 
 		# log users
@@ -628,22 +625,22 @@ fi
 
 	set "180"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
 if [ ! -f "$ARGFILE" ]; then
-		"$CMDECHO" ""; set "182"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND}"
-		set "184"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}$USER${CEND}"
-		set "186"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}${PASSNGINX}${CEND}"
-		set "188"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND}"; "$CMDECHO" ""
+	"$CMDECHO" ""; set "182"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND}"
+	set "184"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}$USER${CEND}"
+	set "186"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}${PASSNGINX}${CEND}"
+	set "188"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND}"; "$CMDECHO" ""
 fi
 
 		# ajout utilisateur supplémentaire
 while :; do
 if [ ! -f "$ARGFILE" ]; then
-		set "190"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
-			read -r REPONSE
+	set "190"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
+		read -r REPONSE
 	else
 if [ -s "$ARGFILE" ]; then
-		REPONSE="y"
-	else
-		REPONSE="n"
+	REPONSE="y"
+else
+	REPONSE="n"
 fi
 fi
 
@@ -657,36 +654,36 @@ if FONCNO "$REPONSE"; then
 	"$CMDTRUE" > /var/log/nginx/rutorrent-error.log
 if [ -z "$ARGREBOOT" ]; then
 	"$CMDECHO" ""; set "194"; FONCTXT "$1"; "$CMDECHO" -n -e "${CGREEN}$TXT1 ${CEND}"
-			read -r REBOOT
-		else
+		read -r REBOOT
+else
 if [ "$ARGREBOOT" = "reboot-off" ]; then
-			break
-	else
-		"$CMDSYSTEMCTL" reboot
-			break
-	fi
+		break
+else
+	"$CMDSYSTEMCTL" reboot
+		break
+fi
 fi
 
 if FONCNO "$REBOOT"; then
-		"$CMDECHO" ""; set "196"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
-		"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/install.html${CEND}"
-		"$CMDECHO" ""; set "200"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"
-		"$CMDECHO" ""; set "202"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
-		"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/${CEND}"
-		"$CMDECHO" ""; "$CMDECHO" ""; set "210"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
-		"$CMDECHO" -e "${CBLUE}                          Ex_Rat - http://mondedie.fr${CEND}"; "$CMDECHO" ""
-				break
+	"$CMDECHO" ""; set "196"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
+	"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/install.html${CEND}"
+	"$CMDECHO" ""; set "200"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"
+	"$CMDECHO" ""; set "202"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
+	"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/${CEND}"
+	"$CMDECHO" ""; "$CMDECHO" ""; set "210"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
+	"$CMDECHO" -e "${CBLUE}                          Ex_Rat - http://mondedie.fr${CEND}"; "$CMDECHO" ""
+		break
 fi
 
 if FONCYES "$REBOOT"; then
-		"$CMDECHO" ""; set "196"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
-		"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/install.html${CEND}"
-		"$CMDECHO" ""; set "202"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
-		"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/${CEND}"
-		"$CMDECHO" ""; "$CMDECHO" ""; set "210"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
-		"$CMDECHO" -e "${CBLUE}                          Ex_Rat - http://mondedie.fr${CEND}"; "$CMDECHO" ""
-		"$CMDSYSTEMCTL" reboot
-				break
+	"$CMDECHO" ""; set "196"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
+	"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/install.html${CEND}"
+	"$CMDECHO" ""; set "202"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
+	"$CMDECHO" -e "${CYELLOW}https://$IP/rutorrent/${CEND}"
+	"$CMDECHO" ""; "$CMDECHO" ""; set "210"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"
+	"$CMDECHO" -e "${CBLUE}                          Ex_Rat - http://mondedie.fr${CEND}"; "$CMDECHO" ""
+	"$CMDSYSTEMCTL" reboot
+		break
 fi
 fi
 
@@ -696,7 +693,7 @@ if [ ! -s "$ARGFILE" ]; then
 	FONCUSER # demande nom user
 	"$CMDECHO" ""
 	FONCPASS # demande mot de passe
-		else
+else
 	FONCARG
 fi
 
@@ -773,10 +770,10 @@ EOF
 	"$CMDSED" -i "s/userlog/$USER:$PORT/g;" "$RUTORRENT"/"$HISTOLOG".log
 if [ ! -f "$ARGFILE" ]; then
 	"$CMDECHO" ""; set "218"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND}"; "$CMDECHO" ""
-		set "182"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND}"
-		set "184"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}$USER${CEND}"
-		set "186"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}${PASSNGINX}${CEND}"
-		set "188"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND}"; "$CMDECHO" ""
+	set "182"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND}"
+	set "184"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}$USER${CEND}"
+	set "186"; FONCTXT "$1"; "$CMDECHO" -e "${CBLUE}$TXT1${CEND} ${CYELLOW}${PASSNGINX}${CEND}"
+	set "188"; FONCTXT "$1"; "$CMDECHO" -e "${CGREEN}$TXT1${CEND}"; "$CMDECHO" ""
 fi
 fi
 done

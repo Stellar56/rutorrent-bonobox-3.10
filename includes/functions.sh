@@ -100,7 +100,7 @@ FONCNO () {
 FONCTXT () {
 	TXT1="$("$CMDGREP" "$1" "$BONOBOX"/lang/"$GENLANG".lang | "$CMDCUT" -c5-)"
 	TXT2="$("$CMDGREP" "$2" "$BONOBOX"/lang/"$GENLANG".lang | "$CMDCUT" -c5-)"
-	# shellcheck disable=SC2034
+		# shellcheck disable=SC2034
 	TXT3="$("$CMDGREP" "$3" "$BONOBOX"/lang/"$GENLANG".lang | "$CMDCUT" -c5-)"
 }
 

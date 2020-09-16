@@ -1,7 +1,7 @@
 #!/bin/bash
 
 FONCCONTROL () {
-if [[ $("$CMDUNAME" -m) == x86_64 ]] && [[ "$VERSION" = 9.* ]] || [[ "$VERSION" = 10.* ]]; then
+if [[ $("$CMDUNAME" -m) == x86_64 ]] && [[ "$VERSION" = 10.* ]] || [[ "$VERSION" = 9.* ]]; then
 if [ "$("$CMDID" -u)" -ne 0 ]; then
 	"$CMDECHO" ""; set "100"; FONCTXT "$1"; "$CMDECHO" -e "${CRED}$TXT1${CEND}"; "$CMDECHO" ""
 		exit 1
@@ -46,7 +46,7 @@ while :; do
 		read -r REPPWD
 if [ "$REPPWD" = "" ]; then
 		AUTOPWD=$("$CMDTR" -dc "1-9a-nA-Np-zP-Z" < /dev/urandom | "$CMDHEAD" -c 8)
-	"$CMDECHO" ""; set "118" "120"; FONCTXT "$1" "$2"; "$CMDECHO"  -n -e "${CGREEN}$TXT1${CEND} ${CYELLOW}$AUTOPWD${CEND} ${CGREEN}$TXT2 ${CEND}"
+	"$CMDECHO" ""; set "118" "120"; FONCTXT "$1" "$2"; "$CMDECHO" -n -e "${CGREEN}$TXT1${CEND} ${CYELLOW}$AUTOPWD${CEND} ${CGREEN}$TXT2 ${CEND}"
 		read -r REPONSEPWD
 if FONCNO "$REPONSEPWD"; then
 	"$CMDECHO"
@@ -193,7 +193,7 @@ FONCIRSSI () {
 		gui-server-password = $3
 EOF
 
-	"$CMDMKDIR" -p  "$RUCONFUSER"/"$1"/plugins/autodl-irssi
+	"$CMDMKDIR" -p "$RUCONFUSER"/"$1"/plugins/autodl-irssi
 
 "$CMDCAT" <<- EOF > "$RUCONFUSER"/"$1"/plugins/autodl-irssi/conf.php
 		<?php
